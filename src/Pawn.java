@@ -65,27 +65,27 @@ public class Pawn extends Piece {
     }
 
     // Checks if the pawn has any possible move . It is different from canMove because it looks all the moves of the pawn :
-    public boolean hasPossibleMoves(String from) {
-        Square target = location.board.getSquareAt(from);
+    @Override
+    public boolean hasPossibleMoves() {
         ArrayList<ArrayList<Square>> board = location.getBoard().getBoard();
         boolean canMove = false;
         int[][] whitePawnMoves = {{1,0},{1,1},{1,-1}};
         int[][] blackPawnMoves = {{-1,0},{-1,1},{-1,-1}};
         // We want to get the valid array so this line of code will help us;
-       int[][] neededPawnMoves = (target.piece.color == ChessBoard.WHITE) ? whitePawnMoves : blackPawnMoves;
+       int[][] neededPawnMoves = (location.piece.color == ChessBoard.WHITE) ? whitePawnMoves : blackPawnMoves;
 
        for(int[] move : neededPawnMoves){
-           int newRow = target.row + move[0];
-           int newCol = target.column+ move[1];
+           int newRow = location.row + move[0];
+           int newCol = location.column+ move[1];
            if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
                Square destination = board.get(newRow).get(newCol);
                boolean condition = false ;
                // This if evaluate to the forward move .
-               if(newCol == target.column){
+               if(newCol == location.column){
                    condition = destination.isEmpty();
 
                }else{
-                   condition = destination.piece != null &&  destination.piece.color != target.piece.color;
+                   condition = destination.piece != null &&  destination.piece.color != location.piece.color;
                }
                if(condition){
                    canMove = true;

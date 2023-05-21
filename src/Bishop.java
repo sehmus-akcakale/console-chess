@@ -1,7 +1,6 @@
-import java.util.ArrayList;
-
-public class Bishop extends Piece{
-
+public class Bishop extends Piece {
+    // Directions of Bishop:
+    final int[][] bishopMoves = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
     public Bishop(int color, Square location) {
         super(color, location);
@@ -9,51 +8,42 @@ public class Bishop extends Piece{
 
     @Override
     public boolean canMove(String to) {
-        boolean validMove = false;
         Square targetLocation = location.getBoard().getSquareAt(to);
         int rowDistance = targetLocation.getRowDistance(location);
         int colDistance = targetLocation.getColDistance(location);
         // Bishop moves with diagonal so first we need to check this :
-        if(Math.abs(rowDistance) == Math.abs(colDistance)){
+        if (Math.abs(rowDistance) == Math.abs(colDistance)) {
             // If target location is not empty and piece of targetLocation has same color with the piece :
-            if(!targetLocation.isEmpty() && targetLocation.getBoard().getSquareAt(to).getPiece().color == this.color ){
-                return validMove;
+            if (!targetLocation.isEmpty() && targetLocation.getPiece().color == this.color) {
+                return false;
             }
-            Square[] between = location.getBoard().getSquaresBetween(location,
-                    targetLocation);
+            Square[] between = location.getBoard().getSquaresBetween(location, targetLocation);
             // If path is empty means there are no any piece on our path :
-            validMove = this.isPathEmpty(between);
-            return validMove;
+            return this.isPathEmpty(between);
         }
-        return validMove;
+        return false;
     }
 
     // Check all the direction of the bishop movement and returns true if bishop has possible move :
-    public boolean hasPossibleMoves(String from) {
-        Square target = location.board.getSquareAt(from);
-        ArrayList<ArrayList<Square>> board = location.getBoard().getBoard();
-        boolean canMove = false;
-        // Directions of Bishop:
-        int[][] bishopMoves = {{1,1}, {1,-1}, {-1,1}, {-1,-1}};
-
-        for(int[] move : bishopMoves){
-            int newRow = target.row + move[0];
-            int newCol = target.column + move[1];
+    @Override
+    public boolean hasPossibleMoves() {
+        var board = location.getBoard().getBoard();
+        for (int[] move : bishopMoves) {
+            int newRow = location.row + move[0];
+            int newCol = location.column + move[1];
             if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
                 Square destination = board.get(newRow).get(newCol);
-                    boolean condition = destination.isEmpty() || (!destination.isEmpty() && destination.piece.color != target.piece.color);
-                if (condition) {
-                    canMove = true;
-                    break;
+                boolean isValidMove = destination.isEmpty() || (destination.piece.color != this.color);
+                if (isValidMove) {
+                    return true;
                 }
             }
         }
-        return canMove;
+        return false;
     }
 
 
-
     public String toString() {
-        return (this.getColor() == ChessBoard.WHITE) ? "B":"b";
+        return (this.getColor() == ChessBoard.WHITE) ? "B" : "b";
     }
 }

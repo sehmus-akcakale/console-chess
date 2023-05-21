@@ -17,29 +17,29 @@ public class Knight extends Piece {
         boolean firstCondition = (Math.abs(rowDistance) == 2) && (Math.abs(colDistance) == 1);
         boolean secondCondition = (Math.abs(colDistance) == 2) && (Math.abs(rowDistance) == 1);
 
-        if(firstCondition || secondCondition){
-            if(!targetLocation.isEmpty() && targetLocation.getBoard().getSquareAt(to).getPiece().color == this.color ){
+        if (firstCondition || secondCondition) {
+            if (!targetLocation.isEmpty() && targetLocation.getBoard().getSquareAt(to).getPiece().color == this.color) {
                 return validMove;
             }
             return true;
         }
         return validMove;
     }
+
     // Check all the direction of the knight movement and returns true if knight has possible move :
     @Override
-    public boolean hasPossibleMoves(String from) {
-        Square target = location.board.getSquareAt(from);
+    public boolean hasPossibleMoves() {
         ArrayList<ArrayList<Square>> board = location.getBoard().getBoard();
         boolean canMove = false;
         // Directions of Knight :
         int[][] knightMoves = {{-2, -1}, {-1, -2}, {-2, 1}, {-1, 2}, {2, -1}, {1, -2}, {2, 1}, {1, 2}};
 
         for (int[] move : knightMoves) {
-            int newRow = target.row + move[0];
-            int newCol = target.column+ move[1];
-            if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+            int newRow = location.row + move[0];
+            int newCol = location.column + move[1];
+            if (8 > newRow && newRow >= 0 && 8 > newCol && newCol >= 0) {
                 Square destination = board.get(newRow).get(newCol);
-                boolean condition = destination.isEmpty() || (!destination.isEmpty() && destination.piece.color != target.piece.color);
+                boolean condition = destination.isEmpty() || (destination.piece.color != this.color);
                 if (condition) {
                     canMove = true;
                     break;
@@ -51,8 +51,7 @@ public class Knight extends Piece {
     }
 
 
-
     public String toString() {
-        return (this.getColor() == ChessBoard.WHITE) ? "N":"n";
+        return (this.getColor() == ChessBoard.WHITE) ? "N" : "n";
     }
 }

@@ -4,13 +4,13 @@ import java.util.List;
 
 public class ChessBoard {
     // To print a board and to get a column address of pieces I defined letters :
-    private final String[] letters = { "a", "b", "c", "d", "e", "f", "g", "h" };
+    private final String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h"};
 
     public static final int WHITE = 0;
     public static final int BLACK = 1;
 
     // gameSituation = false (Game is not finished yet ) gameSituation = true (Game is finished):
-    private boolean gameSituaton = false;
+    private boolean gameSituation = false;
     // To check which color is playing :
     private boolean isWhiteAttacking = true;
 
@@ -23,7 +23,7 @@ public class ChessBoard {
 
 
     public boolean isGameEnded() {
-        return gameSituaton;
+        return gameSituation;
     }
 
     public boolean isWhitePlaying() {
@@ -101,6 +101,7 @@ public class ChessBoard {
         return this.board.get(rowCoordinate).get(colCoordinate).getPiece();
 
     }
+
     //Returns correct Square object at given string(to) :
     public Square getSquareAt(String to) {
         int rowCoordinate = Integer.parseInt(to.strip().split("")[1]) - 1;
@@ -142,43 +143,43 @@ public class ChessBoard {
             return null;
         }
     }
+
     // We check opposite color of isWhiteAttacking because if there is no another different color pieces means IsWhiteAttacking won the game :
-    public void checkGame(){
+    public void checkGame() {
         boolean isEnded = true;
-        for(int i = 0 ; i < 8 ; i++){
-            for(int j = 0 ; j < 8 ; j++){
-                if(board.get(i).get(j).getPiece()!= null && board.get(i).get(j).getPiece().color == (isWhiteAttacking ? 1 : 0)){
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board.get(i).get(j).getPiece() != null && board.get(i).get(j).getPiece().color == (isWhiteAttacking ? 1 : 0)) {
                     isEnded = false;
                     break;
                 }
             }
         }
-        if(isEnded){
-            gameSituaton = true;
-            System.out.println("The " + (isWhiteAttacking ? "White":"Black") + " pieces won.");
+        if (isEnded) {
+            gameSituation = true;
+            System.out.println("The " + (isWhiteAttacking ? "White" : "Black") + " pieces won.");
         }
     }
 
     //Check at least one piece (no matter the color ) has possible move . If there are no possible moves so game is tie :
-    public boolean isGameTie(){
-        for(int i = 0 ; i < 8 ; i++){
-            for(int j = 0 ; j<8;j++){
-                int row = (j+1);
-                String from = letters[i] + row;
-                if(board.get(i).get(j).piece != null ){
-                    if(board.get(i).get(j).piece.hasPossibleMoves(from)){
-                        return false;
-                    }
+    public boolean isGameTie() {
+        for (var row : board) {
+            for (var square : row) {
+                if (!square.isEmpty() && square.getPiece().hasPossibleMoves()) {
+                    return false;
                 }
             }
         }
         return true;
     }
 
-    // Prints board as well as the pieces on it :
+    /**
+     * Print board
+     * @return board as readable string.
+     */
     @Override
     public String toString() {
-        String string = "";
+        var string = "";
         for (int m = 0; m < letters.length; m++) {
             if (m == 0) {
                 string = "   " + letters[m].toUpperCase();
@@ -191,19 +192,13 @@ public class ChessBoard {
             string = string + (i + 1) + " ";
             for (int j = 0; j < 8; j++) {
                 Square s = board.get(i).get(j);
-                if (s == null) {
-                    string = string + "|" + " ";
-                } else {
-                    string = string + "|" + s;
-                }
+                string = string + "|" + s;
                 if (j == 7) {
                     string = string + "| ";
                 }
             }
             string = string + (i + 1) + "\n";
-            if (i == 0) {
-                continue;
-            } else {
+            if (i != 0) {
                 string = string + "  -----------------\n";
             }
         }

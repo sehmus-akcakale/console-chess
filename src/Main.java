@@ -10,22 +10,23 @@ public class Main {
 
         while (!board.isGameEnded()) {
             String from;
-            System.out.println("It is " + (board.isWhitePlaying() ? "White" : "Black") + "'s turn");
-            Piece piece = null;
+            final boolean isWhitePlaying= board.isWhitePlaying();
+            System.out.printf("It is %s's turn\n", (isWhitePlaying ? "White" : "Black"));
+            Piece piece;
             do {
                 System.out.print("Enter the location of the piece:");
                 from = reader.next();
                 piece = board.getPieceAt(from);
                 // If player don't choose correct piece or empty square or if piece has anywhere to go;
                 if(piece == null
-                        || piece.getColor() != (board.isWhitePlaying() ? ChessBoard.WHITE : ChessBoard.BLACK)
-                        || !piece.hasPossibleMoves(from)){
+                        || piece.getColor() != (isWhitePlaying ? ChessBoard.WHITE : ChessBoard.BLACK)
+                        || !piece.hasPossibleMoves()){
                     System.out.println("Invalid choose!");
                 }
                 // If piece has not possible move the code will be stick around so I check whether the piece has possible moves :
             } while (piece == null
-                    || piece.getColor() != (board.isWhitePlaying() ? ChessBoard.WHITE : ChessBoard.BLACK)
-                    || !piece.hasPossibleMoves(from)
+                    || piece.getColor() != (isWhitePlaying ? ChessBoard.WHITE : ChessBoard.BLACK)
+                    || !piece.hasPossibleMoves()
             );
             String to = null;
             do {
@@ -37,10 +38,10 @@ public class Main {
             /*
             I get different error that I should not get, so I decided to get this piece of code as a comment .
             Check at least one Piece has possible move. If all pieces have not any possible move so game is tie :
-            if(board.isGameTie()){
+           */ if(board.isGameTie()){
                 System.out.println("The game ended tie!");
                break;
-            }*/
+            }
             // Check the game whether the game finished or not:
             board.checkGame();
             board.nextPlayer();

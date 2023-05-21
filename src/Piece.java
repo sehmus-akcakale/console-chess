@@ -27,11 +27,12 @@ public abstract class Piece {
 
     // All pieces have different implementation for these methods so I defined them abstract :
     public abstract boolean canMove(String to);
+
     // The idea of the hasPossibleMoves if the piece has at least one Square to go :
-    public abstract boolean hasPossibleMoves(String from);
+    public abstract boolean hasPossibleMoves();
 
     // First clear the location then move the piece to the given location :
-    public void move(String to){
+    public void move(String to) {
         Square targetLocation = location.getBoard().getSquareAt(to);
         location.clear();
         targetLocation.setPiece(this);
@@ -46,5 +47,4 @@ public abstract class Piece {
         }
         return true;
     }
-
 }

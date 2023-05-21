@@ -1,9 +1,9 @@
 public class Square {
-
     protected int row;
     protected int column;
     protected Piece piece;
     protected ChessBoard board;
+
     // The idea of the board is We need board to keep Square object on it :
     public Square(int row, int column, ChessBoard board) {
         this.row = row;
@@ -115,6 +115,8 @@ public class Square {
     @Override
     // toString return the piece string because it is easy to use when we  want to print board :
     public String toString() {
-        return this.piece == null ? " " : this.piece.toString();
+        if (this.piece == null)
+            return " ";
+        return this.piece.toString();
     }
 }
